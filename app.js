@@ -603,8 +603,8 @@
           <h4>Grupo ${g.grupo}</h4>
           <p>${data(g.inicio)} a ${data(g.fim)} · ${esc(g.dias)}</p>
           <table>
-            <thead><tr><th class="num">Nº</th><th>Nome completo</th><th>Matrícula</th><th>CPF</th></tr></thead>
-            <tbody>${g.alunos.map((a, i) => `<tr><td class="num">${i + 1}</td><td>${esc(a.nome)}</td><td>${esc(a.matricula)}</td><td>${esc(a.cpf)}</td></tr>`).join('')}</tbody>
+            <thead><tr><th class="num">Nº</th><th>Nome completo</th><th>R.A.</th>tr></thead>
+            <tbody>${g.alunos.map((a, i) => `<tr><td class="num">${i + 1}</td><td>${esc(a.nome)}</td><td>${esc(a.matricula)}</td></tr>`).join('')}</tbody>
           </table>
         </section>`).join('');
 
@@ -653,7 +653,7 @@
     document.getElementById('abas').innerHTML = ABAS.map(([id, nome]) => `
       <button type="button" role="tab" aria-selected="${ui.aba === id}" data-acao="aba" data-id="${id}">
         ${nome}${id === 'painel' && nErros ? `<span class="contador" aria-label="${nErros} erros">${nErros}</span>` : ''}</button>`).join('');
-    document.getElementById('contexto').textContent = `${d.curso} · Internato · ${d.periodoCurso} · Semestre ${d.semestre}`;
+    document.getElementById('contexto').textContent = `${d.curso} · Internato`;
     const aviso = ui.aviso && !ui.aviso.naGaveta ? `<div class="aviso ${ui.aviso.nivel}" role="status">${esc(ui.aviso.texto)}</div>` : '';
     document.getElementById('conteudo').innerHTML = aviso + VISTAS[ui.aba]();
     const gavetaAberta = Boolean(document.querySelector('.gaveta'));

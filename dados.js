@@ -153,8 +153,6 @@
 
     return {
       curso: 'Medicina',
-      periodoCurso: '9º período',
-      semestre: '2026.2',
       rodizioAtual: 'r3',
       rodizios,
       modulos,
