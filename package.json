@@ -1,0 +1,9 @@
+{
+  "name": "estagio-hub",
+  "private": true,
+  "description": "Protótipo do sistema de gestão dos campos de estágio do internato de Medicina do CEUMA",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

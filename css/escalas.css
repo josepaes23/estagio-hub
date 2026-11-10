@@ -1,0 +1,80 @@
+/* Aba Escalas (js/telas/escalas.js) e gaveta do turno (js/telas/turno.js) */
+
+/* Grade da escala: preceptores nas linhas, turnos da semana nas colunas. */
+.grade { min-width: 1060px; }
+.grade th, .grade td { padding: 3px; vertical-align: middle; }
+.grade thead th { text-align: center; padding: 6px 4px; }
+.grade th.dia { border-left: 1px solid var(--line); }
+.grade th.turno { font-weight: 400; font-size: 12px; }
+.grade .fim-dia { border-right: 1px solid var(--line); }   /* linha entre um dia e outro */
+.grade .col-preceptor { text-align: left; padding-left: 14px; }
+.grade th.preceptor { padding: 6px 14px; font-weight: 400; min-width: 210px; }
+.grade th.preceptor b { font-weight: 600; }
+
+/* Célula de um turno. */
+.cel {
+  width: 100%;
+  min-width: 72px;
+  height: 34px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid transparent;
+}
+.cel:hover { border-color: var(--accent); }
+.cel.livre {      /* turno sem grupo */
+  background: transparent;
+  border: 1px dashed var(--line-strong);
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 13px;
+}
+.cel.conflito { background: var(--erro-soft); color: var(--erro); border-color: var(--erro); }   /* grupo com dois preceptores */
+.cel.fora { background: var(--aviso-soft); color: var(--aviso); border-color: var(--aviso); }       /* fora do horário do preceptor */
+.cel.sel { outline: 2px solid var(--accent); outline-offset: 1px; }                                 /* turno aberto na gaveta */
+
+/* Turno em que o preceptor não atende: listrado. */
+td.nao-atende { background: repeating-linear-gradient(135deg, transparent 0 5px, var(--sunk) 5px 7px); }
+
+/* Legenda abaixo da grade. */
+.legenda {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.amostra {
+  display: inline-grid;
+  place-items: center;
+  min-width: 40px;
+  height: 22px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.amostra.cel-a { background: var(--accent-soft); color: var(--accent); }
+.amostra.livre-a { border: 1px dashed var(--line-strong); font-weight: 400; }
+.amostra.nao-a { background: repeating-linear-gradient(135deg, transparent 0 5px, var(--sunk) 5px 7px); border: 1px solid var(--line); }
+.amostra.conflito-a { background: var(--erro-soft); color: var(--erro); border: 1px solid var(--erro); margin-left: 6px; }
+.amostra:not(:first-child) { margin-left: 8px; }
+
+/* Gaveta do turno: lista de grupos e de preceptores livres. */
+.opcoes { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 8px; }
+.opcoes li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.opcoes li:last-child { border-bottom: 0; }
+.opcoes li.bloqueado { background: var(--sunk); }
+.opcao-info { display: grid; gap: 1px; min-width: 0; font-size: 14px; }
+.opcao-info b { font-size: 15px; }
+.atual { font-size: 13px; color: var(--accent); font-weight: 600; white-space: nowrap; }   /* "Neste turno" */

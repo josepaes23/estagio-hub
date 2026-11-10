@@ -1,0 +1,77 @@
+/* Aba Cadastros: lista de preceptores, ficha do preceptor e turmas
+   (js/telas/preceptores.js, ficha-preceptor.js e turmas.js) */
+
+
+/* Lista de preceptores -------------------------------------------------- */
+
+.horario-txt { font-size: 14px; max-width: 280px; }
+
+
+/* Ficha do preceptor ---------------------------------------------------- */
+
+/* Grade de caixinhas do horário de preceptoria. */
+.grade-horario {
+  width: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.grade-horario th, .grade-horario td { padding: 6px 12px; text-align: center; border-bottom: 1px solid var(--line); }
+.grade-horario tbody th { text-align: left; font-weight: 600; font-size: 14px; }
+.grade-horario tr:last-child > * { border-bottom: 0; }
+.marca { display: grid; place-items: center; cursor: pointer; }
+.marca input { width: 18px; height: 18px; accent-color: var(--accent); }
+
+/* Pergunta "Trabalha na SES?" com Sim/Não. */
+.radios { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 14px; }
+.radios label { display: inline-flex; gap: 6px; align-items: center; }
+
+/* Botões Salvar e Cancelar. */
+.acoes-form {
+  display: flex;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+}
+
+
+/* Turmas e grupos ------------------------------------------------------- */
+
+.sugestao { background: var(--accent-soft); border-radius: 6px; padding: 10px 14px; }   /* "o ideal são N grupos" */
+.destaque { background: var(--aviso-soft); border-radius: 8px; padding: 16px; }        /* alunos sem grupo */
+
+/* Cartões dos grupos. */
+.grupos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 12px;
+}
+.grupo {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.grupo header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+
+/* Alunos do grupo: nome à esquerda, lista para trocar de grupo à direita. */
+.membros { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.membros li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.aluno { display: grid; min-width: 0; }
+.membros select { font-size: 13px; padding: 3px 6px; flex: none; }
+
+/* Formulário de aluno novo. */
+.form-aluno { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.form-aluno .campo { flex: 1; min-width: 160px; }
+.form-aluno .campo:first-child { flex: 2; min-width: 240px; }

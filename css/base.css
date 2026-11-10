@@ -1,0 +1,437 @@
+/* Estilos gerais: cores, texto, cabeçalho, botões, tabelas, formulários e gavetas.
+   O visual é de ferramenta de trabalho, parecido com uma planilha bem arrumada: uma fonte só,
+   o azul institucional da CEUMA como única cor de destaque e o fio vermelho da marca sob o cabeçalho.
+   Cor de estado só onde há problema: vermelho para erro, âmbar para aviso.
+   Os estilos de cada aba ficam em painel.css, escalas.css, cadastros.css e relacoes.css. */
+
+
+/* Cores ----------------------------------------------------------------- */
+
+:root {
+  --bg: #f6f7f9;            /* fundo da página */
+  --surface: #ffffff;       /* cartões, tabelas e gavetas */
+  --sunk: #eef1f5;          /* fundo rebaixado (cabeçalho de tabela, botão desligado) */
+  --fg: #1a2233;            /* texto */
+  --muted: #5d6779;         /* texto secundário */
+  --line: #dde2ea;          /* linhas e bordas */
+  --line-strong: #c6cdd8;
+  --accent: #1b4b9b;        /* azul CEUMA */
+  --accent-fg: #ffffff;     /* texto em cima do azul */
+  --accent-soft: #e8eef8;
+  --brand-red: #d2202f;     /* fio vermelho sob o cabeçalho */
+  --erro: #b3261e;
+  --erro-soft: #fcebea;
+  --aviso: #8a5300;
+  --aviso-soft: #fdf3e1;
+  --ok: #1f6b3a;
+  --ok-soft: #e7f4ec;
+  --shadow: 0 16px 48px rgba(20, 30, 50, .18);
+  --fundo-gaveta: rgba(15, 22, 35, .38);   /* película que escurece a página atrás da gaveta */
+  --f-body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+/* Modo escuro: segue o sistema do computador, a não ser que a página force
+   data-theme="light". Com data-theme="dark" no <html>, fica escuro sempre. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10141b;
+    --surface: #171c25;
+    --sunk: #1e2530;
+    --fg: #e4e8ef;
+    --muted: #9aa4b5;
+    --line: #2a3240;
+    --line-strong: #3a4454;
+    --accent: #8fb0ee;
+    --accent-fg: #0d1b36;
+    --accent-soft: #1d2a44;
+    --brand-red: #e2414f;
+    --erro: #ff9b93;
+    --erro-soft: #3a1f1e;
+    --aviso: #f2c271;
+    --aviso-soft: #35290f;
+    --ok: #86d3a0;
+    --ok-soft: #173022;
+    --shadow: 0 16px 48px rgba(0, 0, 0, .55);
+    --fundo-gaveta: rgba(0, 0, 0, .55);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #10141b;
+  --surface: #171c25;
+  --sunk: #1e2530;
+  --fg: #e4e8ef;
+  --muted: #9aa4b5;
+  --line: #2a3240;
+  --line-strong: #3a4454;
+  --accent: #8fb0ee;
+  --accent-fg: #0d1b36;
+  --accent-soft: #1d2a44;
+  --brand-red: #e2414f;
+  --erro: #ff9b93;
+  --erro-soft: #3a1f1e;
+  --aviso: #f2c271;
+  --aviso-soft: #35290f;
+  --ok: #86d3a0;
+  --ok-soft: #173022;
+  --shadow: 0 16px 48px rgba(0, 0, 0, .55);
+  --fundo-gaveta: rgba(0, 0, 0, .55);
+  color-scheme: dark;
+}
+
+
+/* Base ------------------------------------------------------------------ */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* Com uma gaveta aberta, a página de trás não rola. */
+body.travado { overflow: hidden; }
+
+/* Faixa no topo para celulares com entalhe na tela. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--surface);
+}
+
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.25; text-wrap: balance; }
+h1 { font-size: 19px; font-weight: 700; color: var(--accent); }
+h2 { font-size: 20px; font-weight: 700; }
+h3 { font-size: 16px; font-weight: 600; }
+h4 { font-size: 15px; font-weight: 600; }
+p { margin: 0; }
+button, select, input { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+
+/* Texto ----------------------------------------------------------------- */
+
+.mudo { color: var(--muted); }           /* texto secundário, em cinza */
+.pequeno { font-size: 13px; }
+.txt-erro { color: var(--erro); }
+.txt-aviso { color: var(--aviso); }
+.dica { font-size: 14px; color: var(--muted); max-width: 75ch; }
+
+/* Linha menor embaixo de um nome (CRM, matrícula, unidade...). */
+.sub {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Texto que só os leitores de tela leem. */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+
+/* Cabeçalho e abas ------------------------------------------------------ */
+
+.topo {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 -3px 0 var(--brand-red);
+}
+
+/* Mesma largura máxima e margens laterais para cabeçalho, abas e conteúdo. */
+.topo-in, .abas, main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: max(20px, env(safe-area-inset-left, 0px));
+  padding-right: max(20px, env(safe-area-inset-right, 0px));
+}
+
+.topo-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
+  padding-block: 14px 4px;
+}
+.topo-in p { color: var(--muted); font-size: 14px; }
+.topo-in .nota { margin-left: auto; font-size: 13px; }
+
+.abas {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 3px;
+}
+.abas button {
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--muted);
+  white-space: nowrap;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.abas button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.abas button:hover { color: var(--fg); }
+
+/* Bolinha vermelha com o número de erros, na aba Painel. */
+.contador {
+  background: var(--erro);
+  color: var(--surface);
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+  min-width: 20px;
+  padding: 0 6px;
+  line-height: 20px;
+  text-align: center;
+}
+
+
+/* Conteúdo -------------------------------------------------------------- */
+
+main { padding-block: 28px 64px; display: grid; gap: 32px; }
+#conteudo { display: grid; gap: 32px; min-width: 0; }
+.secao { display: grid; gap: 12px; min-width: 0; }
+
+/* Título da seção de um lado, seletores do outro. */
+.cab-secao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+/* Botões ---------------------------------------------------------------- */
+
+.btn {
+  background: var(--accent);
+  color: var(--accent-fg);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 7px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn:disabled {
+  background: var(--sunk);
+  border-color: var(--line);
+  color: var(--muted);
+  cursor: not-allowed;
+  filter: none;
+}
+
+/* Botão secundário: branco, com borda. */
+.btn.sec { background: var(--surface); color: var(--accent); border-color: var(--line-strong); }
+.btn.sec:hover:not(:disabled) { border-color: var(--accent); }
+.btn.sec:disabled { background: transparent; color: var(--muted); border-color: var(--line); }
+.btn.pequeno { padding: 4px 10px; font-size: 14px; }
+
+/* Botão com cara de link. */
+.link {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font-weight: 600;
+  text-align: left;
+}
+.link:hover { text-decoration: underline; }
+.link.perigo { color: var(--erro); }
+
+
+/* Seletor: fileira de botões com um marcado (rodízio, módulo, turma...) -- */
+
+.segmentos {
+  display: inline-flex;
+  flex-wrap: wrap;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+  max-width: 100%;
+}
+.segmentos button {
+  border: 0;
+  border-right: 1px solid var(--line);
+  background: none;
+  padding: 6px 14px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.segmentos button:last-child { border-right: 0; }
+.segmentos button span { font-size: 13px; margin-left: 4px; }
+.segmentos button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+
+/* Mensagens: ok (verde), aviso (âmbar) e erro (vermelho) ----------------- */
+
+.aviso {
+  border-radius: 6px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--line-strong);
+  background: var(--sunk);
+}
+.aviso.ok { border-left-color: var(--ok); background: var(--ok-soft); }
+.aviso.aviso { border-left-color: var(--aviso); background: var(--aviso-soft); }
+.aviso.erro { border-left-color: var(--erro); background: var(--erro-soft); }
+
+
+/* Tabelas --------------------------------------------------------------- */
+
+/* Moldura da tabela. Rola para o lado quando a tabela não cabe. */
+.tabela {
+  overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+table { width: 100%; border-collapse: collapse; }
+th, td {
+  text-align: left;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+thead th {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--sunk);
+  vertical-align: bottom;
+}
+tbody tr:last-child > * { border-bottom: 0; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }   /* colunas de números */
+
+
+/* Formulários ----------------------------------------------------------- */
+
+/* Barra de filtros acima de uma lista. */
+.ferramentas { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+.campo-inline { display: grid; gap: 4px; font-size: 14px; }
+.campo-inline.cresce { flex: 1; min-width: 200px; max-width: 360px; }
+.campo-inline label { color: var(--muted); }
+
+input, select {
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  padding: 7px 10px;
+  background: var(--surface);
+  min-width: 0;
+}
+select:disabled { color: var(--muted); background: var(--sunk); }
+
+fieldset {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 0;
+  padding: 16px 0 4px;
+  display: grid;
+  gap: 12px;
+}
+legend { font-weight: 600; font-size: 16px; padding-right: 8px; }
+
+/* Campos lado a lado, quebrando linha quando não cabem. */
+.campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr));
+  gap: 12px 16px;
+}
+.campo { display: grid; gap: 4px; align-content: start; font-size: 14px; }
+.campo label, .campo .rotulo { color: var(--muted); }
+.campo:has(.largo) { grid-column: 1 / -1; }   /* campo que ocupa a linha inteira */
+.campo.com-erro input, .campo.com-erro select { border-color: var(--erro); }
+.erro-campo { color: var(--erro); font-size: 13px; }
+
+
+/* Gaveta: painel que abre pela direita (turno da escala, ficha do preceptor) */
+
+.fundo { position: fixed; inset: 0; background: var(--fundo-gaveta); z-index: 20; }
+
+.gaveta {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21;
+  width: min(440px, 100%);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + 22px)
+    max(22px, env(safe-area-inset-right, 0px))
+    calc(env(safe-area-inset-bottom, 0px) + 28px)
+    22px;
+}
+.gaveta.larga { width: min(760px, 100%); }
+.gaveta-cab { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+.gaveta-cab > div { display: grid; gap: 4px; }
+.gaveta-secao { display: grid; gap: 10px; }
+
+/* Botão × que fecha a gaveta. */
+.fechar {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-radius: 6px;
+  width: 36px;
+  height: 36px;
+  font-size: 24px;
+  line-height: 1;
+  flex: none;
+}
+.fechar:hover { background: var(--sunk); color: var(--fg); }
+
+
+/* Rodapé ---------------------------------------------------------------- */
+
+.rodape {
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Para quem pediu ao sistema menos animação. */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

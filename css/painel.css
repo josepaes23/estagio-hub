@@ -1,0 +1,44 @@
+/* Aba Painel (js/telas/painel.js) */
+
+/* Etiqueta "em andamento" ao lado do título do rodízio. */
+.selo {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 2px 8px;
+  vertical-align: middle;
+}
+
+/* Lista "Precisa de atenção": nível | texto | botão Abrir. */
+.pendencias {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.pendencias li {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.pendencias li:last-child { border-bottom: 0; }
+.nivel { font-size: 13px; font-weight: 600; }
+.nivel.erro { color: var(--erro); }
+.nivel.aviso { color: var(--aviso); }
+
+/* No celular, o nível vai para uma linha só dele. */
+@media (max-width: 560px) {
+  .pendencias li { grid-template-columns: minmax(0, 1fr) auto; }
+  .pendencias .nivel { grid-column: 1 / -1; }
+}
+
+/* Últimas alterações nas escalas. */
+.historico { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.historico li { display: flex; flex-wrap: wrap; gap: 2px 14px; }
